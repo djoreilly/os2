@@ -54,8 +54,10 @@ RUN ["/usr/bin/busybox", "rm", "-rf", "/var", "/etc/ssl", "/usr/bin/busybox"]
 
 # Make OS image
 FROM base as os
+RUN zypper addrepo https://download.opensuse.org/repositories/security:SELinux/openSUSE_Leap_15.3/security:SELinux.repo
+RUN zypper --gpg-auto-import-keys refresh
 RUN zypper dup -y
-RUN zypper in -y -- \
+RUN zypper in -y --allow-vendor-change -- \
     apparmor-parser \
     avahi \
     bash-completion \
@@ -98,6 +100,7 @@ RUN zypper in -y -- \
     kernel-firmware-usb-network \
     -kubic-locale-archive \
     less \
+    -libsemanage1 \
     lshw \
     lsof \
     lsscsi \
@@ -118,6 +121,7 @@ RUN zypper in -y -- \
     python-azure-agent \
     qemu-guest-agent \
     rsync \
+    selinux-policy-targeted \
     squashfs \
     strace \
     sysstat \
