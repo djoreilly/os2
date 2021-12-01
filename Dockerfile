@@ -54,12 +54,10 @@ RUN ["/usr/bin/busybox", "rm", "-rf", "/var", "/etc/ssl", "/usr/bin/busybox"]
 
 # Make OS image
 FROM base as os
-RUN zypper dup -y
-RUN zypper in -y -- \
+RUN zypper addrepo https://download.opensuse.org/repositories/openSUSE:/Leap:/Micro:/5.1/images/repo/Leap-Micro-5.1-x86_64-Media/ LeapMicro
+RUN zypper --non-interactive ref --repo LeapMicro
+RUN zypper --non-interactive install --repo LeapMicro \
     apparmor-parser \
-    avahi \
-    bash-completion \
-    conntrack-tools \
     coreutils \
     curl \
     device-mapper \
@@ -75,7 +73,6 @@ RUN zypper in -y -- \
     grub2-i386-pc \
     grub2-x86_64-efi \
     haveged \
-    hdparm \
     iproute2 \
     iptables \
     iputils \
@@ -98,9 +95,7 @@ RUN zypper in -y -- \
     kernel-firmware-usb-network \
     -kubic-locale-archive \
     less \
-    lshw \
     lsof \
-    lsscsi \
     lvm2 \
     mdadm \
     multipath-tools \
@@ -111,25 +106,20 @@ RUN zypper in -y -- \
     openssh \
     parted \
     -perl \
-    pciutils \
     pigz \
     procps \
     psmisc \
-    python-azure-agent \
-    qemu-guest-agent \
     rsync \
     squashfs \
-    strace \
     sysstat \
     systemd \
-    systemd-presets-branding-openSUSE \
-    -systemd-presets-branding-MicroOS \
     systemd-sysvinit \
     tar \
     timezone \
     vim-small \
     which \
-    zstd
+    wicked \
+    wicked-service
 
 # Copy in some local OS customizations
 COPY opensuse/files /
